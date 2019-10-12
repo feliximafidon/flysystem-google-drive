@@ -1215,7 +1215,7 @@ class GoogleDriveAdapter extends AbstractAdapter
     protected function ensureDriveFileExists($contents, $parentId, $fileName, $srcDriveFile, $mime)
     {
         if (! $mime) {
-            $mime = Util::guessMimeType($fileName, $contents);
+            $mime = Util::guessMimeType($fileName, substr($contents, 0, 1024));
         }
 
         $driveFile = new Google_Service_Drive_DriveFile();
