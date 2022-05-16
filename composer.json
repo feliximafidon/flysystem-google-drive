@@ -30,6 +30,11 @@
         "branch-alias": {
             "dev-api_v2": "1.0.x-dev",
             "dev-master": "1.1.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Hypweb\\Flysystem\\GoogleDriveServiceProvider"
+            ]
         }
     }
 }
