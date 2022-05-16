@@ -1,6 +1,6 @@
 <?php
 
-namespace Hypweb\Flysystem\GoogleDrive;
+namespace IF\Flysystem\GoogleDrive;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
