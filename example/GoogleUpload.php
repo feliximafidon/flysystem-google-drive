@@ -5,7 +5,7 @@ namespace App;
 use League\Flysystem\Filesystem;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
-use Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter;
+use IF\Flysystem\GoogleDrive\GoogleDriveAdapter;
 
 class GoogleUpload
 {
