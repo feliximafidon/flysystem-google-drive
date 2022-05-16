@@ -19,7 +19,7 @@ class GoogleDriveAdapter extends AbstractAdapter
      *
      * @var string
      */
-    const FETCHFIELDS_GET = 'id,name,mimeType,modifiedTime,parents,permissions,size,webContentLink,webViewLink';
+    const FETCHFIELDS_GET = 'id,name,mimeType,modifiedTime,parents,permissions,size,webContentLink,webViewLink,thumbnailLink';
 
     /**
      * Fetch fields setting for list
@@ -56,6 +56,7 @@ class GoogleDriveAdapter extends AbstractAdapter
             'role' => 'reader',
             'withLink' => true
         ],
+        'permissionOptions' => [],
         'appsExportMap' => [
             'application/vnd.google-apps.document' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             'application/vnd.google-apps.spreadsheet' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -91,6 +92,13 @@ class GoogleDriveAdapter extends AbstractAdapter
      */
     protected $publishPermission;
 
+    /**
+     * Permission options as published item
+     *
+     * @var array
+     */
+    protected $permissionOptions = [];
+    
     /**
      * Cache of file objects
      *
@@ -168,6 +176,7 @@ class GoogleDriveAdapter extends AbstractAdapter
         $this->spaces = $this->options['spaces'];
         $this->useHasDir = $this->options['useHasDir'];
         $this->publishPermission = $this->options['publishPermission'];
+        $this->permissionOptions = $this->options['permissionOptions'];
 
         $this->fetchfieldsGet = self::FETCHFIELDS_GET;
         if ($this->options['additionalFetchField']) {
@@ -562,9 +571,9 @@ class GoogleDriveAdapter extends AbstractAdapter
      *
      * @return array
      */
-    public function listContents($dirname = '', $recursive = false)
+    public function listContents($dirname = '', $recursive = false, $maxResults = 0, $query = '')
     {
-        return $this->getItems($dirname, $recursive);
+        return $this->getItems($dirname, $recursive, $maxResults, $query);
     }
 
     /**
@@ -582,6 +591,19 @@ class GoogleDriveAdapter extends AbstractAdapter
             }
         }
         return false;
+    }
+    
+    /**
+     * Get the thumbnailLink of a file.
+     *
+     * @param string $path
+     *
+     * @return array|false
+     */
+    public function getThumbnailLink($path)
+    {
+        $meta = $this->getMetadata($path);
+        return ($meta && isset($meta['thumbnailLink'])) ? $meta : false;
     }
 
     /**
@@ -768,7 +790,7 @@ class GoogleDriveAdapter extends AbstractAdapter
             }
             try {
                 $permission = new Google_Service_Drive_Permission($this->publishPermission);
-                if ($this->service->permissions->create($file->getId(), $permission)) {
+                if ($this->service->permissions->create($file->getId(), $permission, $this->permissionOptions)) {
                     return true;
                 }
             } catch (Exception $e) {
@@ -794,7 +816,7 @@ class GoogleDriveAdapter extends AbstractAdapter
             try {
                 foreach ($permissions as $permission) {
                     if ($permission->type === 'anyone' && $permission->role === 'reader') {
-                        $this->service->permissions->delete($file->getId(), $permission->getId());
+                        $this->service->permissions->delete($file->getId(), $permission->getId(), $this->permissionOptions);
                     }
                 }
                 return true;
@@ -878,6 +900,7 @@ class GoogleDriveAdapter extends AbstractAdapter
         $result['filename'] = $path_parts['filename'];
         $result['extension'] = $path_parts['extension'];
         $result['timestamp'] = strtotime($object->getModifiedTime());
+        $result['thumbnailLink'] = $object->getThumbnailLink();
         if ($result['type'] === 'file') {
             $result['mimetype'] = $object->mimeType;
             $result['size'] = (int) $object->getSize();
@@ -1379,7 +1402,7 @@ class GoogleDriveAdapter extends AbstractAdapter
                 'files.copy', 'files.create', 'files.delete',
                 'files.trash', 'files.get', 'files.list', 'files.update',
                 'files.watch'
-            ], ['supportsTeamDrives' => true]),
+            ], ['supportsAllDrives' => true]),
             $this->defaultParams
         );
     }
