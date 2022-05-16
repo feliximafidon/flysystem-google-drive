@@ -1402,7 +1402,7 @@ class GoogleDriveAdapter extends AbstractAdapter
                 'files.copy', 'files.create', 'files.delete',
                 'files.trash', 'files.get', 'files.list', 'files.update',
                 'files.watch'
-            ], ['supportsTeamDrives' => true]),
+            ], ['supportsAllDrives' => true]),
             $this->defaultParams
         );
     }
