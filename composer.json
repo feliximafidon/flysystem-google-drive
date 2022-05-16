@@ -1,8 +1,12 @@
 {
-    "name": "nao-pon/flysystem-google-drive",
-    "description": "Flysystem adapter for Google Drive",
+    "name": "feliximafidon/flysystem-google-drive",
+    "description": "Flysystem adapter for Google Drive, adapted from nao-pon/flysystem-google-drive",
     "license": "MIT",
     "authors": [
+        {
+            "name": "Felix Imafidon",
+            "email": "dancer.distal-0s@icloud.com"
+        },
         {
             "name": "Naoki Sawada",
             "email": "hypweb@gmail.com"
@@ -20,7 +24,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Hypweb\\Flysystem\\GoogleDrive\\": "src/"
+            "IF\\Flysystem\\GoogleDrive\\": "src/"
         }
     },
     "config": {
@@ -33,7 +37,7 @@
         },
         "laravel": {
             "providers": [
-                "Hypweb\\Flysystem\\GoogleDrive\\GoogleDriveServiceProvider"
+                "IF\\Flysystem\\GoogleDrive\\GoogleDriveServiceProvider"
             ]
         }
     }

@@ -1,18 +1,13 @@
 # Flysystem Adapter for Google Drive
 
-[![Author](https://img.shields.io/badge/author-nao--pon%20hypweb-blue.svg?style=flat)](http://xoops.hypweb.net/)
+[![Author]](https://feliximafidon.com)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
 
 ## Installation
 
-- For Google Drive API V3
 ```bash
-composer require nao-pon/flysystem-google-drive:~1.1
-```
-- For Google Drive API V2 "**Deprecated**"
-```bash
-composer require nao-pon/flysystem-google-drive:~1.0.0
+composer require feliximafidon/flysystem-google-drive
 ```
 
 ## Usage
@@ -27,7 +22,7 @@ $client->refreshToken('[your refresh token]');
 
 $service = new \Google_Service_Drive($client);
 
-$adapter = new \Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter($service, '['root' or folder ID]');
+$adapter = new \IF\Flysystem\GoogleDrive\GoogleDriveAdapter($service, '['root' or folder ID]');
 /* Recommended cached adapter use */
 // $adapter = new \League\Flysystem\Cached\CachedAdapter(
 //     new \Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter($service, '['root' or folder ID]'),
@@ -41,7 +36,7 @@ $filesystem = new \League\Flysystem\Filesystem($adapter);
 
 ```bash
 composer require nao-pon/elfinder-flysystem-driver-ext
-composer require nao-pon/flysystem-google-drive:~1.1
+composer require feliximafidon/flysystem-google-drive:~1.1
 ```
 
 ```php
@@ -55,7 +50,7 @@ $client->setClientSecret('xxxxx CLIENTSECRET xxxxx');
 $client->refreshToken('xxxxx REFRESH TOKEN xxxxx');
 
 // Google Drive Adapter
-$googleDrive = new \Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter(
+$googleDrive = new \IF\Flysystem\GoogleDrive\GoogleDriveAdapter(
 	new \Google_Service_Drive($client), // Client service
 	'root',                             // Folder ID as root ('root' or Folder ID)
 	[ 'useHasDir' => true ]             // options (elFinder need hasDir method)
