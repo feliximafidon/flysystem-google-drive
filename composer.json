@@ -33,7 +33,7 @@
         },
         "laravel": {
             "providers": [
-                "Hypweb\\Flysystem\\GoogleDriveServiceProvider"
+                "Hypweb\\Flysystem\\GoogleDrive\\GoogleDriveServiceProvider"
             ]
         }
     }
